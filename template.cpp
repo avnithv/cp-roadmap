@@ -11,7 +11,7 @@ using namespace std;
 #define TC int tc; cin >> tc; while (tc--) solve();
 #define FORN(i, a, b) for(int i = a; i < b; i++)
 #define EACH(x, a) for(auto x : a)
-#define DBG(z, n) forn(i,0,n)cerr<<z[i]<<" \n"[i==n-1];
+#define DBG(z, n) FORN(i,0,n)cerr<<z[i]<<" \n"[i==n-1];
 
 typedef long long ll;
 typedef pair<int, int> pi;
