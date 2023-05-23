@@ -13,9 +13,13 @@ using namespace std;
 #define EACH(x, a) for(auto x : a)
 #define DBG(z, n) FORN(i,0,n)cerr<<z[i]<<" \n"[i==n-1];
 
+// only in emergencies
+// #define int ll
+
 typedef long long ll;
 typedef pair<int, int> pi;
 typedef pair<ll, ll> pl;
+typedef unordered_set<int> usi;
 
 signed main() {
   return 0;
