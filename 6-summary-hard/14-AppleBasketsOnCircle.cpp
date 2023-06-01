@@ -26,11 +26,6 @@ typedef long long ll;
 typedef pair<int, int> pi;
 typedef pair<ll, ll> pl;
 
-
-bool sameline(pi &a, pi &b, pi &c) {
-    return (b.f - a.f) * (c.s - b.s) == (b.s - a.s) * (c.f - b.f);
-}
-
 ll laps(vt<ll> &arr, ll nlaps) {
     ll ans = 0;
     EACH(x, arr) {
