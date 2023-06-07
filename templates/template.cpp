@@ -33,6 +33,10 @@ typedef pair<ll, ll> pl;
 
 const ll mod = 1e9+7;
 
+tctT> void ckmin(T &a, T b) {a = min(a, b);}
+tctT> void ckmax(T &a, T b) {a = max(a, b);}
+
+
 signed main() {
   return 0;
 }
