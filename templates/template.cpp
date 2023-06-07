@@ -24,8 +24,10 @@ using namespace std;
 // only in emergencies
 // #define int ll
 
-tctT> using vt<T> = vector<T>;
-tctTU> using gp<T, U> = gp_hash_table<T, U>;
+tcT> using vt<T> = vector<T>;
+tcTU> using gp<T, U> = gp_hash_table<T, U>;
+tcT> using pq<T> = priority_queue<T>;
+tcT> using qu<T> = queue<T>;
 
 typedef long long ll;
 typedef pair<int, int> pi;
