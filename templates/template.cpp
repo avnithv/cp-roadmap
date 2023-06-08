@@ -12,7 +12,7 @@ using namespace std;
 #define TC int tc; cin >> tc; while (tc--) solve();
 #define FORN(i, a, b) for(int i = a; i < b; i++)
 #define EACH(x, a) for(auto &x : a)
-#define DBG(z) FORN(i,0,sz(z)cerr<<z[i]<<" \n"[i==sz(z)-1];
+#define DBG(z) FORN(i,0,sz(z))cerr<<z[i]<<" \n"[i==sz(z)-1];
 #define DBG2(z) EACH(zzz, z) {DBG(zzz)}
 #define SET(arr, val) memset((arr), (val), (sizeof(arr)));
 #define sz(x) (int)(x).size()
