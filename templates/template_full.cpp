@@ -37,8 +37,8 @@ tcT> using qu = queue<T>;
 
 const ll MOD = 1e9+7;
 
-tcT> inline void ckmin(T &a, T b) {a = min(a, b);}
-tcT> inline void ckmax(T &a, T b) {a = max(a, b);}
+tcT> inline void chmin(T &a, T b) {a = min(a, b);}
+tcT> inline void chmax(T &a, T b) {a = max(a, b);}
 
 const int RANDOM = chrono::high_resolution_clock::now().time_since_epoch().count();
 
