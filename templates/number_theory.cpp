@@ -6,10 +6,10 @@ using namespace std;
 #define sz(a) (int)a.size()
 
 using ll = long long;
-
 const ll MOD = 1e9+7;
+const ll MXN = 1e5+5;
 
-/*==============MOD==============*/
+/*==============MODULAR==============*/
 
 ll mpw(ll &a, ll &b) {
     if (!b) return 1;
@@ -27,21 +27,39 @@ inline ll norm(ll x) {
 
 /*=============COMBO=============*/
 
-const ll MXN = 1e5+5;
-ll fc[MXN+1];
-ll iv[MXN+1];
-
-void precomp() {
-    fc[0] = 1;
+vt<ll> fc(MXN+1), iv(MXN+1);
+void precompute_factorials() {
+	fc[0] = 1;
 	FORN(i,1,MXN+1) fc[i] = (fc[i-1] * i) % MOD;
 	FORN(i,0,MXN+1) iv[i] = inv(fc[i]);
 }
+ll choose(ll n, ll k) { return (fc[n] * iv[k] % MOD) * iv[n-k] % MOD; }
 
-ll choose(ll n, ll k) {
-    return (fc[n] * iv[k] % MOD) * iv[n-k] % MOD;
+
+/*=============SIEVE=============*/
+
+vt<ll> sieve(MXN+1, 0), primes;
+void precompute_sieve() {
+	for (int i = 2; i * i <= MXN; i++) {
+		if (sieve[i]) continue;
+		primes.pb(i);
+		for (int j = i * i; j <= MXN; j += i) sieve[j] = i;
+	}
+}
+vt<pl> factor(ll n) {
+	vt<pl> fs;
+	while (sieve[n]) {
+		ll c = sieve[n], f = 0;
+		while (sieve[n] == c) {
+			n /= c;
+			f++;
+		}
+		fs.pb(mp(c, f));
+	}
+	return fs;
 }
 
-/*==============FFT==============*/
+/*==============NTT==============*/
 /*=========SOURCE:KACTL==========*/
 
 void ntt(vt<ll> &a) {
