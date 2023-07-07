@@ -4,6 +4,8 @@
 using namespace std;
 using namespace __gnu_pbds;
 
+/*===============================DEFINES=================================*/
+
 #define pb push_back
 #define f first
 #define s second
@@ -15,16 +17,17 @@ using namespace __gnu_pbds;
 #define REV(i, b, a) for(int i = b - 1; i >= a; i--)
 #define EACH(x, a) for(auto &x : a)
 #define DBG(z) FORN(i,0,sz(z))cerr<<z[i]<<" \n"[i==sz(z)-1];
-#define DBG2(z) EACH(zzz, z) {DBG(zzz)}
 #define sz(x) (int)(x).size()
 #define all(x) (x).begin(), (x).end()
 #define log(x) (63-__builtin_clzll(x))
 #define tcT template<class T
 #define tcTU tcT, class U
 
+mt19937 rng((uint32_t)chrono::steady_clock::now().time_since_epoch().count());
+#define rand(a, b) uniform_int_distribution<ll>(a, b)(rng)
+
 // only in emergencies
 // #define int ll
-
 
 using ll = long long;
 using str = string;
@@ -36,13 +39,12 @@ tcT> using pq = priority_queue<T>;
 tcT> using qu = queue<T>;
 
 const ll MOD = 1e9+7;
+const ll MXN = 1e5+5;
 
-tcT> inline void chmin(T &a, T b) {a = min(a, b);}
-tcT> inline void chmax(T &a, T b) {a = max(a, b);}
+/*=======================================================================*/
+/*============================NUMBER_THEORY==============================*/
 
-const int RANDOM = chrono::high_resolution_clock::now().time_since_epoch().count();
-
-ll mpw(ll &a, ll &b) {
+inline ll mpw(ll &a, ll &b) {
     if (!b) return 1;
     ll x = mpw(a, b/2);
     return ((x * x) % MOD) * (b & 1 ? a : 1) % MOD;
@@ -56,9 +58,103 @@ inline ll norm(ll x) {
     return (x % MOD + MOD) % MOD;
 }
 
+vt<ll> fc(MXN+1), iv(MXN+1);
+void precompute_factorials() {
+	fc[0] = 1;
+	FORN(i,1,MXN+1) fc[i] = (fc[i-1] * i) % MOD;
+	FORN(i,0,MXN+1) iv[i] = inv(fc[i]);
+}
+ll choose(ll n, ll k) { return (fc[n] * iv[k] % MOD) * iv[n-k] % MOD; }
+
+vt<ll> sieve(MXN+1, 0), primes;
+void precompute_sieve() {
+	for (int i = 2; i * i <= MXN; i++) {
+		if (sieve[i]) continue;
+		primes.pb(i);
+		for (int j = i * i; j <= MXN; j += i) sieve[j] = i;
+	}
+}
+vt<pl> factor(ll n) {
+	vt<pl> fs;
+	while (sieve[n]) {
+		ll c = sieve[n], f = 0;
+		while (sieve[n] == c) {
+			n /= c;
+			f++;
+		}
+		fs.pb(mp(c, f));
+	}
+	return fs;
+}
+
+/*=======================================================================*/
+/*================================MISC===================================*/
+
+tcT> struct RollingHash {
+	int n;
+	const ll M = (1ULL<<61) - 1, B = RAND(0, M - 1);
+	vt<ll> pow, hsh;
+	ll mod_mul(ll a, ll b) {
+		ll res = 0; a %= M;
+		while (b) {
+			if (b & 1) res = (res + a) % M;
+			a = (2 * a) % M;
+			b >>= 1;
+		}
+		return res;
+	}
+	//ll mod_mul(ll a, ll b) { return ((__int128)a*b) % M; }
+	Hash(T &s) {
+		n = sz(s); pow.resize(n+1); pow[0] = 1;
+		FORN(i,0,n) pow[i+1] = mod_mul(pow[i], B);
+		hsh.resize(n+1); hsh[0] = 0;
+		FORN(i,0,n) hsh[i+1] = (mod_mul(hsh[i], B) + s[i]) % M;
+	}
+	ll hash(int a, int b) { return (hsh[b+1] - mod_mul(hsh[a], pow[b-a+1]) + M) % M; }
+};
+using HS = RollingHash<str>;
+
+tcT> struct PrefixSum {
+	vt<T> arr;
+	PrefixSum(int n) : arr(n+1, 0) {}
+	PrefixSum(vt<T> &ar) : arr(sz(ar)+1, 0) {FORN(i,1,sz(ar)+1) arr[i] = arr[i-1] + ar[i-1];}
+	inline T& operator[](int ind) {return arr[ind+1];}
+	void summarize() { FORN(i,1,sz(arr)+1) arr[i] += arr[i-1]; }
+	void difference() { REV(i,sz(arr)+1,1) arr[i] -= arr[i-1]; }
+	inline T sum(int l, int r) {return arr[r+1] - arr[l];}
+	inline void add(int l, int r, T v) {arr[l+1] += v; if (r + 2 < sz(arr)) arr[r+2] -= v;}
+	inline int size() {return sz(arr)-1;}
+};
+using PS = PrefixSum<ll>;
+
+tcT> struct DisjointSetUnion {
+	vt<T> e;
+	DisjointSetUnion(T n) : e(N, -1) { }
+	T get(T x) { return e[x] < 0 ? x : e[x] = get(e[x]); }
+	bool same_set(T a, T b) { return get(a) == get(b); }
+	T operator[](int ind) { return e[ind]; }
+	int size() { return sz(e); }
+	T setsz(T x) { return -e[get(x)]; }
+	bool unite(T x, T y) {  
+		x = get(x), y = get(y);
+		if (x == y) return false;
+		if (e[x] > e[y]) swap(x, y);
+		e[x] += e[y]; e[y] = x; return true;
+	}
+};
+using DSU = DisjointSetUnion<ll>;
+
+tcT> inline void chmin(T &a, T b) {a = min(a, b);}
+tcT> inline void chmax(T &a, T b) {a = max(a, b);}
+
+/*=======================================================================*/
+
+
 void solve() {
+	
 }
 
 signed main() {
 	FASTIO
+	TC
 }
