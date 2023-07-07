@@ -44,7 +44,7 @@ const ll MXN = 1e5+5;
 /*=======================================================================*/
 /*============================NUMBER_THEORY==============================*/
 
-inline ll mpw(ll &a, ll &b) {
+inline ll mpw(ll a, ll b) {
     if (!b) return 1;
     ll x = mpw(a, b/2);
     return ((x * x) % MOD) * (b & 1 ? a : 1) % MOD;
@@ -104,7 +104,7 @@ tcT> struct RollingHash {
 		return res;
 	}
 	//ll mod_mul(ll a, ll b) { return ((__int128)a*b) % M; }
-	Hash(T &s) {
+	RollingHash(T &s) {
 		n = sz(s); pow.resize(n+1); pow[0] = 1;
 		FORN(i,0,n) pow[i+1] = mod_mul(pow[i], B);
 		hsh.resize(n+1); hsh[0] = 0;
@@ -129,7 +129,7 @@ using PS = PrefixSum<ll>;
 
 tcT> struct DisjointSetUnion {
 	vt<T> e;
-	DisjointSetUnion(T n) : e(N, -1) { }
+	DisjointSetUnion(T n) : e(n, -1) { }
 	T get(T x) { return e[x] < 0 ? x : e[x] = get(e[x]); }
 	bool same_set(T a, T b) { return get(a) == get(b); }
 	T operator[](int ind) { return e[ind]; }
