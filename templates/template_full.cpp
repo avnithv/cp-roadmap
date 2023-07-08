@@ -24,7 +24,7 @@ using namespace __gnu_pbds;
 #define tcTU tcT, class U
 
 mt19937 rng((uint32_t)chrono::steady_clock::now().time_since_epoch().count());
-#define rand(a, b) uniform_int_distribution<ll>(a, b)(rng)
+#define RAND(a, b) uniform_int_distribution<ll>(a, b)(rng)
 
 // only in emergencies
 // #define int ll
