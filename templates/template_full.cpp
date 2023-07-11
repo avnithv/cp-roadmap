@@ -27,7 +27,7 @@ mt19937 rng((uint32_t)chrono::steady_clock::now().time_since_epoch().count());
 #define RAND(a, b) uniform_int_distribution<ll>(a, b)(rng)
 
 // only in emergencies
-// #define int ll
+#define int ll
 
 using ll = long long;
 using str = string;
@@ -43,7 +43,6 @@ const ll MXN = 1e5+5;
 
 /*=======================================================================*/
 /*============================NUMBER_THEORY==============================*/
-
 
 template<int MOD> struct Modular {
 	static const int mod = MOD;
@@ -75,20 +74,20 @@ template<int MOD> struct Modular {
 using Mint = Modular<MOD>;
 using pM = pair<Mint, Mint>;
 
-vt<ll> fc(MXN+1), iv(MXN+1);
+vt<Mint> fc(MXN+1), iv(MXN+1);
 void precompute_factorials() {
 	fc[0] = 1;
-	FORN(i,1,MXN+1) fc[i] = (fc[i-1] * i) % MOD;
+	FORN(i,1,MXN+1) fc[i] = fc[i-1] * i;
 	FORN(i,0,MXN+1) iv[i] = inv(fc[i]);
 }
-ll choose(ll n, ll k) { return (fc[n] * iv[k] % MOD) * iv[n-k] % MOD; }
+Mint choose(ll n, ll k) { return fc[n] * iv[k] * iv[n-k]; }
 
 vt<ll> sieve(MXN+1, 0), primes;
 void precompute_sieve() {
-	for (int i = 2; i * i <= MXN; i++) {
+	for (ll i = 2; i * i <= MXN; i++) {
 		if (sieve[i]) continue;
 		primes.pb(i);
-		for (int j = i * i; j <= MXN; j += i) sieve[j] = i;
+		for (ll j = i * i; j <= MXN; j += i) sieve[j] = i;
 	}
 }
 vt<pl> factor(ll n) {
@@ -133,16 +132,22 @@ using HS = RollingHash<str>;
 
 tcT> struct PrefixSum {
 	vt<T> arr;
+	PrefixSum() : arr(1, 0) {}
 	PrefixSum(int n) : arr(n+1, 0) {}
 	PrefixSum(vt<T> &ar) : arr(sz(ar)+1, 0) {FORN(i,1,sz(ar)+1) arr[i] = arr[i-1] + ar[i-1];}
-	inline T& operator[](int ind) {return arr[ind+1];}
-	void summarize() { FORN(i,1,sz(arr)+1) arr[i] += arr[i-1]; }
-	void difference() { REV(i,sz(arr)+1,1) arr[i] -= arr[i-1]; }
+	inline T& operator()(int ind) { return arr[ind]; }
+	inline T operator[](int ind) {return arr[ind+1] - arr[ind];}
+	inline void summarize() { FORN(i,1,sz(arr)+1) arr[i] += arr[i-1]; }
+	inline void difference() { REV(i,sz(arr)+1,1) arr[i] -= arr[i-1]; }
 	inline T sum(int l, int r) {return arr[r+1] - arr[l];}
-	inline void add(int l, int r, T v) {arr[l+1] += v; if (r + 2 < sz(arr)) arr[r+2] -= v;}
+	inline void update(int l, int r, T v) {arr[l+1] += v; if (r + 2 < sz(arr)) arr[r+2] -= v;}
 	inline int size() {return sz(arr)-1;}
+	inline void push_back(T x) { arr.pb(arr.back() + x); }
+	inline T back() { return arr.back() - arr[size()-1]; }
+	inline void pop_back() { arr.pop_back(); }
 };
 using PS = PrefixSum<ll>;
+using PSM = PrefixSum<Mint>;
 
 tcT> struct DisjointSetUnion {
 	vt<T> e;
