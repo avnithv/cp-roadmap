@@ -52,6 +52,9 @@ tcTU> using ordered_map = tree<T, U, less<T>, rb_tree_tag, tree_order_statistics
 tcT> inline void chmin(T &a, T b) {a = min(a, b);}
 tcT> inline void chmax(T &a, T b) {a = max(a, b);}
 
+const ll MOD = 1e9+7;
+const ll MXN = 1e5+5;
+
 void solve() {
 	
 }
