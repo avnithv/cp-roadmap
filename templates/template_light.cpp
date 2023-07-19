@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 
 using namespace std;
 using namespace __gnu_pbds;
@@ -20,6 +21,8 @@ using namespace __gnu_pbds;
 #define log(x) (63-__builtin_clzll(x))
 #define tcT template<class T
 #define tcTU tcT, class U
+#define lb lower_bound
+#define ub upper_bound
 
 mt19937 rng((uint32_t)chrono::steady_clock::now().time_since_epoch().count());
 #define rand(a, b) uniform_int_distribution<ll>(a, b)(rng)
@@ -32,9 +35,19 @@ using str = string;
 using pi = pair<int, int>;
 using pl = pair<ll, ll>;
 tcT> using vt = vector<T>;
-tcTU> using gp = gp_hash_table<T, U>;
+
+const ll RANDOM = chrono::high_resolution_clock::now().time_since_epoch().count();
+tcT> struct chash { 
+	const uint64_t C = ll(4e18*acos(0))+71; 
+	ll operator()(T x) const { return __builtin_bswap64((((ll)x)^RANDOM)*C); }
+};
+
+tcTU> using gp = gp_hash_table<T, U, chash<T>>;
 tcT> using pq = priority_queue<T>;
 tcT> using qu = queue<T>;
+tcT> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+tcT> using ordered_multiset = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
+tcTU> using ordered_map = tree<T, U, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 tcT> inline void chmin(T &a, T b) {a = min(a, b);}
 tcT> inline void chmax(T &a, T b) {a = max(a, b);}
