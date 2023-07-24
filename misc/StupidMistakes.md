@@ -1,0 +1,3 @@
+- Int Overflow
+- Array out of bounds or negative
+- When you have a vector of vectors, don't do vt<ll> x = grid[i]; since it will copy. Instead just do grid[i][j]
