@@ -1,3 +1,4 @@
 - Int Overflow
 - Array out of bounds or negative
 - When you have a vector of vectors, don't do vt<ll> x = grid[i]; since it will copy. Instead just do grid[i][j]
+- Binary search bounds: If L is your answer, make L exactly the lowest possible and R one more than the highest possible. Max value that L can reach will be R-1.
