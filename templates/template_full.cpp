@@ -101,23 +101,32 @@ Mint choose(ll n, ll k) { return fc[n] * iv[k] * iv[n-k]; }
 
 vt<ll> sieve(MXN+1, 0), primes;
 void precompute_sieve() {
-	for (ll i = 2; i * i <= MXN; i++) {
+	for (ll i = 2; i <= MXN; i++) {
 		if (sieve[i]) continue;
 		primes.pb(i);
 		for (ll j = i * i; j <= MXN; j += i) sieve[j] = i;
 	}
 }
-vt<pl> factor(ll n) {
-	vt<pl> fs;
+vt<pl> factor_with_sieve(ll n) { // O(log N), N <= MXN
+	vt<ll> fs;
 	while (sieve[n]) {
-		ll c = sieve[n], f = 0;
-		while (sieve[n] == c) {
-			n /= c;
-			f++;
-		}
-		fs.pb(mp(c, f));
+		fs.pb(sieve[n]);
+		n /= sieve[n];
 	}
+	if (n != 1) fs.pb(n);
+	sort(all(fs));
 	return fs;
+}
+vt<ll> factor_with_primes(ll n) { // O(|primes|), N <= MXN^2
+	vt<ll> facts;
+	EACH(p, primes) {
+		while (n % p == 0) {
+			facts.pb(p);
+			n /= p;
+		}
+	}
+	if (n != 1) facts.pb(n);
+	return facts;
 }
 
 /*=======================================================================*/
