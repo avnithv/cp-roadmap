@@ -81,3 +81,24 @@ void bfs(Graph &g, int start = 0) {
 		}
 	}
 }
+
+
+typedef tuple<ll, int, int> bfsState;
+void multibfs(Graph &g, pq<bfsState> &fr) {
+	while (!fr.empty()) {
+		ll d; int from, edge; tie(d, from, edge) = fr.top(); fr.pop();
+		int to = (from == -1 ? edge : (int)g.adj[from][edge].s);
+			
+		// process
+		//cerr<<from<<" "<<edge<<" "<<to<<" "<<d<<endl;
+
+		if (g.vis[to]) continue;
+		g.vis[to] = true; g.par[to] = from; g.comp[to] = g.cs; g.dist[to] = d;
+
+		FORN(i,0,sz(g.adj[to])) { 
+			if (!g.vis[g.adj[to][i].s]) {
+				fr.push({d + g.adj[to][i].f, to, i}); 
+			}
+		}
+	}
+}
