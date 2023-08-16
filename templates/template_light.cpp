@@ -18,6 +18,7 @@ using namespace __gnu_pbds;
 #define DBG(z) FORN(i,0,sz(z))cerr<<z[i]<<" \n"[i==sz(z)-1];
 #define sz(x) (int)(x).size()
 #define all(x) (x).begin(), (x).end()
+#define rall(a) (a).rbegin(), (a).rend()
 #define log(x) (63-__builtin_clzll(x))
 #define tcT template<class T
 #define tcTU tcT, class U
@@ -52,8 +53,7 @@ tcTU> using ordered_map = tree<T, U, less<T>, rb_tree_tag, tree_order_statistics
 tcT> inline void chmin(T &a, T b) {a = min(a, b);}
 tcT> inline void chmax(T &a, T b) {a = max(a, b);}
 
-const ll MOD = 1e9+7;
-const ll MXN = 1e5+5;
+const ll MOD = 1e9+7, MXN = 1e5+5, INF = 1e18;
 
 void solve() {
 	
