@@ -17,6 +17,7 @@ using ll = long long;
 using str = string;
 using pi = pair<int, int>;
 using pl = pair<ll, ll>;
+using ppl = pair<ll, pl>;
 tcT> using vt = vector<T>;
 
 tcT> using pq = priority_queue<T, vt<T>, greater<T>>;
@@ -24,9 +25,9 @@ tcT> using pq = priority_queue<T, vt<T>, greater<T>>;
 const ll INF = 1e18;
 
 struct Graph {
-	int cs = 0; vt<bool> vis; vt<int> par, comp; vt<ll> dist;
+	int n; vt<bool> vis; vt<int> par; vt<ll> dist; vt<ppl> edg;
 	vt<vt<pl>> adj; // graph[i] = {w, j} --> edge from i to j with weight w
-	Graph(ll n) : vis(n, false),  par(n, -1), comp(n, -1), dist(n, INF), adj(n) {};
+	Graph(ll _n) : n(_n), vis(_n, false), par(_n, -1), dist(_n, INF), adj(_n) {};
 	friend void read(Graph &g, ll m, bool direct = false, bool weight = false) {
 		FORN(i,0,m) {
 			ll a, b, w = 1; cin >> a >> b; a--; b--;
@@ -34,31 +35,51 @@ struct Graph {
 			g.addEdge(a, b, direct, w);
 		}
 	}
-	ll addVertex() { vis.pb(false); par.pb(-1); dist.pb(INF); adj.resize(sz(adj)+1); return sz(adj)-1; }
+	ll addVertex() { vis.pb(false); par.pb(-1); dist.pb(INF); adj.resize(++n); return n; }
 	void addEdge(ll from, ll to, bool direct = false, ll weight = 1) { 
-		adj[from].pb({weight, to}); 
-		if (!direct) adj[to].pb({weight, from}); 
+		adj[from].pb({weight, to}); edg.pb({weight, {from, to}});
+		if (!direct) { adj[to].pb({weight, from}); edg.pb({weight, {to, from}}); }
 	}
+	void reset() { FORN(i,0,n) vis[i] = false; }
 	int size() { return sz(adj); }
 	void __print() {
 		FORN(i,0,sz(adj)) {
 			cerr<<i<<endl;
-			EACH(z, adj[i]) cerr<<z.f<<" "<<z.s<<endl;
-			cerr<<endl;
-		}
-		cerr<<endl;
+			EACH(z, adj[i]) cerr<<z.f<<" "<<z.s<<endl; cerr<<endl;
+		} cerr<<endl;
 	}
 };
 
 void dfs(Graph &g, int edge = 0, int from = -1) {
 	int to = (from == -1 ? edge : (int)g.adj[from][edge].s);
-
-	// process
-
+	ll edge_w = (from == -1 ? 0 : g.adj[from][edge].f);
+	
 	if (g.vis[to]) return;
-	g.vis[to] = true; g.par[to] = from; g.comp[to] = g.cs;
-	g.dist[to] = (from == -1 ? 0 : g.dist[from] + g.adj[from][edge].f);
-	FORN(i,0,sz(g.adj[to])) { if (!g.vis[g.adj[to][i].s]) dfs(g, i, to); }
+	g.vis[to] = true; g.par[to] = from;
+	g.dist[to] = (from == -1 ? 0 : g.dist[from]) + w;
+
+	FORN(i,0,sz(g.adj[to])) { 
+		int nxt = g.adj[to][i].s;
+		if (!g.vis[nxt]) {
+			dfs(g, i, to); 
+		}
+	}
+}
+
+void treedfs(Graph &g, int edge = 0, int from = -1) {
+	int to = (from == -1 ? edge : (int)g.adj[from][edge].s);
+	ll edge_w = (from == -1 ? 0 : g.adj[from][edge].f);
+	
+	if (g.vis[to]) return;
+	g.vis[to] = true; g.par[to] = from;
+	g.dist[to] = (from == -1 ? 0 : g.dist[from]) + w;
+
+	FORN(i,0,sz(g.adj[to])) { 
+		int nxt = g.adj[to][i].s;
+		if (!g.vis[nxt]) {
+			dfs(g, i, to); 
+		}
+	}
 }
 
 
