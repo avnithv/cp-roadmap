@@ -66,23 +66,6 @@ void dfs(Graph &g, int edge = 0, int from = -1) {
 	}
 }
 
-void treedfs(Graph &g, int edge = 0, int from = -1) {
-	int to = (from == -1 ? edge : (int)g.adj[from][edge].s);
-	ll edge_w = (from == -1 ? 0 : g.adj[from][edge].f);
-	
-	if (g.vis[to]) return;
-	g.vis[to] = true; g.par[to] = from;
-	g.dist[to] = (from == -1 ? 0 : g.dist[from]) + w;
-
-	FORN(i,0,sz(g.adj[to])) { 
-		int nxt = g.adj[to][i].s;
-		if (!g.vis[nxt]) {
-			dfs(g, i, to); 
-		}
-	}
-}
-
-
 void bfs(Graph &g, int start = 0) {
 	pq<tuple<ll, int, int>> fr; fr.push({0, -1, start}); // distance, parent node, edge
 	while (!fr.empty()) {
