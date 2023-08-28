@@ -22,12 +22,14 @@ tcT> using vt = vector<T>;
 
 tcT> using pq = priority_queue<T, vt<T>, greater<T>>;
 
+using ppl = pair<pl, pl>;
+
 const ll INF = 1e18;
 
 struct Graph {
-	int n; vt<bool> vis; vt<int> par; vt<ll> dist; vt<ppl> edg;
+	int n; vt<bool> vis; vt<int> par; vt<ll> dist; vt<ll> dp; vt<ppl> edg;
 	vt<vt<pl>> adj; // graph[i] = {w, j} --> edge from i to j with weight w
-	Graph(ll _n) : n(_n), vis(_n, false), par(_n, -1), dist(_n, INF), adj(_n) {};
+	Graph(ll _n) : n(_n), vis(_n, false), par(_n, -1), dist(_n, INF), dp(_n, 0), adj(_n) {};
 	friend void read(Graph &g, ll m, bool direct = false, bool weight = false) {
 		FORN(i,0,m) {
 			ll a, b, w = 1; cin >> a >> b; a--; b--;
@@ -53,8 +55,10 @@ struct Graph {
 void dfs(Graph &g, int edge = 0, int from = -1) {
 	int to = (from == -1 ? edge : (int)g.adj[from][edge].s);
 	ll edge_w = (from == -1 ? 0 : g.adj[from][edge].f);
-	
-	if (g.vis[to]) return;
+
+	//cerr<<from<<" "<<edge<<" "<<to<<" "<<d<<endl;
+
+	if (g.vis[to]) return; // remove for trees
 	g.vis[to] = true; g.par[to] = from;
 	g.dist[to] = (from == -1 ? 0 : g.dist[from]) + w;
 
@@ -66,42 +70,21 @@ void dfs(Graph &g, int edge = 0, int from = -1) {
 	}
 }
 
-void bfs(Graph &g, int start = 0) {
-	pq<tuple<ll, int, int>> fr; fr.push({0, -1, start}); // distance, parent node, edge
+void bfs(Graph &g, pq<ppl> &fr) {
 	while (!fr.empty()) {
-		ll d; int from, edge; tie(d, from, edge) = fr.top(); fr.pop();
+		ppl x = fr.top(); fr.pop(); // distance, parent node, edge 
+		ll d = x.f.f; int from = (int)x.f.s, edge = (int)x.s.f;
 		int to = (from == -1 ? edge : (int)g.adj[from][edge].s);
-			
-		// process
+
 		//cerr<<from<<" "<<edge<<" "<<to<<" "<<d<<endl;
 
 		if (g.vis[to]) continue;
-		g.vis[to] = true; g.par[to] = from; g.comp[to] = g.cs; g.dist[to] = d;
+		g.vis[to] = true; g.par[to] = from; g.dist[to] = d;
 
 		FORN(i,0,sz(g.adj[to])) { 
-			if (!g.vis[g.adj[to][i].s]) {
-				fr.push({d + g.adj[to][i].f, to, i}); 
-			}
-		}
-	}
-}
-
-
-typedef tuple<ll, int, int> bfsState;
-void multibfs(Graph &g, pq<bfsState> &fr) {
-	while (!fr.empty()) {
-		ll d; int from, edge; tie(d, from, edge) = fr.top(); fr.pop();
-		int to = (from == -1 ? edge : (int)g.adj[from][edge].s);
-			
-		// process
-		//cerr<<from<<" "<<edge<<" "<<to<<" "<<d<<endl;
-
-		if (g.vis[to]) continue;
-		g.vis[to] = true; g.par[to] = from; g.comp[to] = g.cs; g.dist[to] = d;
-
-		FORN(i,0,sz(g.adj[to])) { 
-			if (!g.vis[g.adj[to][i].s]) {
-				fr.push({d + g.adj[to][i].f, to, i}); 
+			pl nxt = g.adj[to][i];
+			if (!g.vis[nxt.s]) {
+				fr.push({{d + nxt.f, to}, {i, INF}}); 
 			}
 		}
 	}
