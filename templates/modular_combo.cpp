@@ -28,6 +28,13 @@ template<int MOD> struct Modular {
 using Mint = Modular<MOD>;
 using pM = pair<Mint, Mint>;
 
+Mint modpow(Mint a, ll p) {
+	Mint ans = 1; 
+	for (; p; p /= 2, a *= a) if (p&1) ans *= a;
+	return ans; 
+}
+Mint inv(Mint a) { return modpow(a,MOD-2); }
+
 vt<Mint> fc(MXN+1), iv(MXN+1);
 void precompute_factorials() {
 	fc[0] = 1;
