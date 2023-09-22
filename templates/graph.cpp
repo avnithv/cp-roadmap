@@ -1,31 +1,3 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
-#define pb push_back
-#define f first
-#define s second
-#define endl "\n"
-#define mp make_pair
-#define FORN(i, a, b) for(int i = a; i < b; i++)
-#define EACH(x, a) for(auto &x : a)
-#define sz(x) (int)(x).size()
-#define tcT template<class T
-#define tcTU tcT, class U
-
-using ll = long long;
-using str = string;
-using pi = pair<int, int>;
-using pl = pair<ll, ll>;
-using ppl = pair<ll, pl>;
-tcT> using vt = vector<T>;
-
-tcT> using pq = priority_queue<T, vt<T>, greater<T>>;
-
-using ppl = pair<pl, pl>;
-
-const ll INF = 1e18;
-
 struct Graph {
 	int n; vt<bool> vis; vt<int> par; vt<ll> dist; vt<ll> dp; vt<ppl> edg;
 	vt<vt<pl>> adj; // graph[i] = {w, j} --> edge from i to j with weight w
