@@ -1,4 +1,4 @@
-template<int MOD> struct Modular {
+template<const int MOD> struct Modular {
 	static const int mod = MOD;
 	int v; explicit operator int() const { return v; } // explicit -> don't silently convert to int
 	Modular():v(0) {}
@@ -22,7 +22,7 @@ template<int MOD> struct Modular {
 	friend Modular operator-(Modular a, const Modular& b) { return a -= b; }
 	friend Modular operator*(Modular a, const Modular& b) { return a *= b; }
 	friend Modular operator/(Modular a, const Modular& b) { return a /= b; }
-	friend istream& operator>>(istream& inp, Modular& a) { ll x; cin >> x; a = Modular(x); return inp;}
+	friend istream& operator>>(istream& inp, Modular& a) { ll x; inp >> x; a = Modular(x); return inp;}
 	friend ostream& operator<<(ostream& out, const Modular& a) { out << a.v; return out; }
 };
 using Mint = Modular<MOD>;
@@ -33,12 +33,12 @@ Mint modpow(Mint a, ll p) {
 	for (; p; p /= 2, a *= a) if (p&1) ans *= a;
 	return ans; 
 }
-Mint inv(Mint a) { return modpow(a,MOD-2); }
+Mint invert(Mint a) { return modpow(a,MOD-2); }
 
 vt<Mint> fc(MXN+1), iv(MXN+1);
 void precompute_factorials() {
 	fc[0] = 1;
 	FORN(i,1,MXN+1) fc[i] = fc[i-1] * i;
-	FORN(i,0,MXN+1) iv[i] = inv(fc[i]);
+	FORN(i,0,MXN+1) iv[i] = invert(fc[i]);
 }
 Mint choose(ll n, ll k) { return fc[n] * iv[k] * iv[n-k]; }
