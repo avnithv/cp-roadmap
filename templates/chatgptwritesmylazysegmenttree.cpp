@@ -2,7 +2,7 @@
 template <typename T>
 struct SegmentTree {
     // CHANGE HERE
-    static constexpr T = INF;
+    static constexpr T DEFAULT = INF;
     //static constexpr pl DEFAULT = mp(INF, INF);
     struct Node {
         T val, lazy;
