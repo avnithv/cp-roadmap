@@ -1,10 +1,7 @@
 tcT> struct LazySegmentTree {
     int len;
     vt<T> tree, lazy;
-    // CHANGE THESE
-    static constexpr T TREE_DEFAULT = 0;
-    static constexpr T LAZY_DEFAULT = 0;
-    
+
     LazySegmentTree(int n) {
         len = 1; while (len < n) len *= 2;
         tree.resize(2 * len, TREE_DEFAULT);
@@ -39,8 +36,8 @@ tcT> struct LazySegmentTree {
         if (lx >= r || rx <= l) return TREE_DEFAULT;
         if (lx >= l && rx <= r) return tree[x];
         int m = (lx + rx) / 2;
-        int left = query(l, r, 2 * x + 1, lx, m);
-        int right = query(l, r, 2 * x + 2, m, rx);
+        T left = query(l, r, 2 * x + 1, lx, m);
+        T right = query(l, r, 2 * x + 2, m, rx);
         return tree_merge(left, right);
     }
 
@@ -48,6 +45,11 @@ tcT> struct LazySegmentTree {
     T query(int l, int r) { return query(l, r, 0, 0, len); }
     void tree_merged(T &a, T b) { a = tree_merge(a, b); }
     void lazy_merged(T &a, T b) { a = lazy_merge(a, b); }
+
+    // CHANGE THESE
+    static constexpr T TREE_DEFAULT = 0;
+    static constexpr T LAZY_DEFAULT = 0;
+    static constexpr T QUERY_DEFAULT = -INF;
 
     // max, min
     T tree_merge(T a, T b) {
