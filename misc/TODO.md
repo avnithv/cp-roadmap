@@ -1,3 +1,3 @@
-- Segment tree
-- Tries
-- 
+- SCC
+- Topological Sort
+- Graphs maybe
