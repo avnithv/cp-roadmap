@@ -20,7 +20,9 @@ using namespace std;
 // #define int ll
 using ll = long long;
 tcT> using vt = vector<T>;
-tcT> using pq = priority_queue<T>;
+tcT> using pq = priority_queue<T, vt<T>, greater<T>>;
+mt19937 rng((uint32_t)chrono::steady_clock::now().time_since_epoch().count());
+#define RAND(a, b) uniform_int_distribution<ll>(a, b)(rng)
 tcT> inline void chmin(T &a, T b) {a = min(a, b);}
 tcT> inline void chmax(T &a, T b) {a = max(a, b);}
 const ll MOD = 998244353, MXN = 2e5+5, INF = 1e16;
