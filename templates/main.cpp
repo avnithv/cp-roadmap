@@ -19,6 +19,8 @@ using namespace std;
 #define ub upper_bound
 // #define int ll
 using ll = long long;
+using pi = pair<int, int>;
+using pl = pair<ll, ll>;
 tcT> using vt = vector<T>;
 tcT> using pq = priority_queue<T, vt<T>, greater<T>>;
 mt19937 rng((uint32_t)chrono::steady_clock::now().time_since_epoch().count());
