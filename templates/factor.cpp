@@ -1,12 +1,3 @@
-
-vt<Mint> fc(MXN+1), iv(MXN+1);
-void precompute_factorials() {
-	fc[0] = 1;
-	FORN(i,1,MXN+1) fc[i] = fc[i-1] * i;
-	FORN(i,0,MXN+1) iv[i] = inv(fc[i]);
-}
-Mint choose(ll n, ll k) { return fc[n] * iv[k] * iv[n-k]; }
-
 vt<ll> sieve(MXN+1, 0), primes;
 void precompute_sieve() {
 	for (ll i = 2; i <= MXN; i++) {
