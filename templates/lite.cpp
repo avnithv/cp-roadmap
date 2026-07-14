@@ -9,10 +9,19 @@ template<class T> using V = vector<T>;
 using pi = pair<int, int>;
 #define F first
 #define S second
+#define endl "\n"
 
+void solve() {
+	
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
+	int tc = 1;
+	cin >> tc;
+	while (tc--) {
+		solve();
+	}
 }
