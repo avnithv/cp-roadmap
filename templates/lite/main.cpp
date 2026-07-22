@@ -10,14 +10,17 @@ using pi = pair<int, int>;
 #define F first
 #define S second
 #define endl "\n"
+// #define int ll
 template<class T> void chmin(T &a, T b) { a = min(a, b); }
 template<class T> void chmax(T &a, T b) { a = max(a, b); }
+const int inf = 1e9, mxn = 2e5+5;
+const ll INF = 1e17, MOD = 998244353;
 
 void solve() {
 	
 }
 
-int main() {
+signed main() {
 	ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
