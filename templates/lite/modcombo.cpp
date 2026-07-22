@@ -42,5 +42,6 @@ void precompute_factorials() {
 	for (int i = 0; i <= mxn; i++) iv[i] = invert(fc[i]);
 }
 Mint choose(ll n, ll k) { 
-  return fc[n] * iv[k] * iv[n-k]; 
+    if (n < 0 || n > k) return Mint(0);
+    return fc[n] * iv[k] * iv[n-k]; 
 }
