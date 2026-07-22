@@ -10,6 +10,8 @@ using pi = pair<int, int>;
 #define F first
 #define S second
 #define endl "\n"
+template<class T> void chmin(T &a, T b) { a = min(a, b); }
+template<class T> void chmax(T &a, T b) { a = max(a, b); }
 
 void solve() {
 	
