@@ -35,11 +35,11 @@ Mint modpow(Mint a, ll p) {
 }
 Mint invert(Mint a) { return modpow(a,MOD-2); }
 
-V<Mint> fc(MXN+1), iv(MXN+1);
+vector<Mint> fc(mxn+1), iv(mxn+1);
 void precompute_factorials() {
 	fc[0] = 1;
-	for (int i = 1; i <= MXN; i++) fc[i] = fc[i-1] * i;
-	for (int i = 0; i <= MXN; i++) iv[i] = invert(fc[i]);
+	for (int i = 1; i <= mxn; i++) fc[i] = fc[i-1] * i;
+	for (int i = 0; i <= mxn; i++) iv[i] = invert(fc[i]);
 }
 Mint choose(ll n, ll k) { 
   return fc[n] * iv[k] * iv[n-k]; 
