@@ -1,3 +1,0 @@
-- SCC
-- Topological Sort
-- Graphs maybe
