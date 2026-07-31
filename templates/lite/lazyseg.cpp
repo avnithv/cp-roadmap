@@ -1,17 +1,29 @@
+
+// ex: https://atcoder.jp/contests/abc455/tasks/abc455_f
 template<class T, class U> struct LazySegmentTree {
     int len;
-    V<T> tree, lazy;
+    V<T> tree;
+    V<U> lazy;
 
-    const T TD = -INF;
+    //ans, sum, len
+    const T TD = {0, 0, 0};
     const U LD = 0;
     T tm(T a, T b) {
-        return max(a, b);
+        return {
+            a[0] + b[0] + a[1] * b[1], 
+            a[1] + b[1], 
+            a[2] + b[2]
+        };
     }
-    T lm(U a, U b) {
+    U lm(U a, U b) {
         return a + b;
     }
     T ltm(U a, T b) {
-        return a + b;
+        return {
+            b[0] + b[1] * (b[2] - 1) * a + a * a * b[2] * (b[2] - 1) / 2,
+            b[1] + b[2] * a,
+            b[2]
+        };
     }
 
     LazySegmentTree(int n) {
@@ -89,7 +101,7 @@ template<class T, class U> struct LazySegmentTree {
     }
 
     // [l, r)
-    void add(int l, int r, T v) { 
+    void add(int l, int r, U v) { 
         // cerr<<"add: "<<l<<" "<<r<<" "<<v<<endl;
         add(l, r, v, 1, 0, len); 
     }
@@ -108,4 +120,4 @@ template<class T, class U> struct LazySegmentTree {
         cerr<<endl;
     }
 };
-using SegTree = LazySegmentTree<ll, ll>;
+using SegTree = LazySegmentTree<array<Mint, 3>, Mint>;
